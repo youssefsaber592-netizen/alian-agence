@@ -4,6 +4,7 @@ import { fontVariables } from "@/lib/fonts";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://alian-agence.vercel.app"),
   title: {
     default: "ALIAN AGENCE — Modern home & lifestyle essentials",
     template: "%s | ALIAN AGENCE",
@@ -18,10 +19,23 @@ export const metadata: Metadata = {
     "متجر",
     "ديكور",
   ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     title: "ALIAN AGENCE — Modern home & lifestyle essentials",
     description:
       "Curated products, honest prices and a calm shopping experience in Arabic and English.",
+    url: "https://alian-agence.vercel.app",
+    siteName: "ALIAN AGENCE",
     type: "website",
     locale: "ar_EG",
   },
