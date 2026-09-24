@@ -189,7 +189,7 @@ export function Footer() {
               </span>
             </span>
             <div className="leading-none">
-              <p className="text-base font-extrabold text-white">ALIAN AGENCY</p>
+              <p className="text-base font-extrabold text-white">ALIAN AGENCE</p>
               <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.3em] text-sky-400">
                 {t("brand.tagline")}
               </p>
@@ -209,7 +209,7 @@ export function Footer() {
             </li>
             <li className="flex items-center gap-2.5">
               <Mail className="h-4 w-4 text-sky-400" />
-              <span dir="ltr">hello@alian.agency</span>
+              <span dir="ltr">hello@alian.agence</span>
             </li>
             <li className="flex items-center gap-2.5">
               <MapPin className="h-4 w-4 text-sky-400" />
@@ -276,7 +276,7 @@ export function Footer() {
       <div className="relative border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-6 text-center sm:flex-row sm:text-start lg:px-8">
           <p className="text-xs font-semibold text-slate-500">
-            © {new Date().getFullYear()} ALIAN AGENCY.{" "}
+            © {new Date().getFullYear()} ALIAN AGENCE.{" "}
             {isArabic ? "كل الحقوق محفوظة." : "All rights reserved."}
           </p>
 

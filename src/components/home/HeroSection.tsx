@@ -49,7 +49,7 @@ export function HeroSection() {
   const headline = isArabic
     ? ["صُمم", "ليعكس", "ذوقك"]
     : ["Elevate", "Your"];
-  const accent = isArabic ? "مع ALIAN AGENCY" : "Lifestyle";
+  const accent = isArabic ? "مع ALIAN AGENCE" : "Lifestyle";
 
   return (
     <section

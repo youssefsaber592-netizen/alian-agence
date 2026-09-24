@@ -146,7 +146,7 @@ export function Navbar() {
                     solid ? "text-sky-600" : "text-sky-300",
                   )}
                 >
-                  AGENCY
+                  AGENCE
                 </span>
               </span>
             </Link>
@@ -332,7 +332,7 @@ export function Navbar() {
               </Link>
 
               <p className="mt-auto pt-8 text-xs font-semibold text-slate-400">
-                {isArabic ? "ALIAN AGENCY — أسلوب حياة عصري" : "ALIAN AGENCYE — modern living, curated."}
+                {isArabic ? "ALIAN AGENCE — أسلوب حياة عصري" : "ALIAN AGENCE — modern living, curated."}
               </p>
             </motion.div>
           </motion.div>
