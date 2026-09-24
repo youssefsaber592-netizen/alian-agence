@@ -1,14 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { sections } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
+  const sectionId = Number(id);
+
   try {
-    const id = Number(params.id);
     const body = await request.json();
 
     const [updated] = await db
@@ -25,7 +27,7 @@ export async function PATCH(
         imageUrl: body.imageUrl,
         isActive: body.isActive,
       })
-      .where(eq(sections.id, id))
+      .where(eq(sections.id, sectionId))
       .returning();
 
     return NextResponse.json(updated);
@@ -35,12 +37,14 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: Request,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
+  const sectionId = Number(id);
+
   try {
-    const id = Number(params.id);
-    await db.delete(sections).where(eq(sections.id, id));
+    await db.delete(sections).where(eq(sections.id, sectionId));
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete section" }, { status: 500 });
