@@ -5,12 +5,11 @@ import { eq } from "drizzle-orm";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: any
 ) {
-  const { id } = await params;
-  const sectionId = Number(id);
-
   try {
+    const params = await context.params;
+    const sectionId = Number(params.id);
     const body = await request.json();
 
     const [updated] = await db
@@ -38,12 +37,12 @@ export async function PATCH(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: any
 ) {
-  const { id } = await params;
-  const sectionId = Number(id);
-
   try {
+    const params = await context.params;
+    const sectionId = Number(params.id);
+
     await db.delete(sections).where(eq(sections.id, sectionId));
     return NextResponse.json({ success: true });
   } catch (error) {
