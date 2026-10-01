@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { KeyRound, Lock } from "lucide-react";
+import { KeyRound, Lock, LogOut } from "lucide-react";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import type { ProductDTO, CategoryDTO } from "@/lib/types";
 import type { Section } from "@/db/schema";
@@ -59,6 +59,16 @@ export function AdminPageClient({
     }
   };
 
+  // تسجيل الخروج وإعادة قفل الداشبورد
+  const handleLogout = () => {
+    try {
+      window.localStorage.removeItem(ADMIN_KEY);
+    } catch {
+      // ignore
+    }
+    setAccess(false);
+  };
+
   if (!access) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950 flex items-center justify-center px-6">
@@ -105,6 +115,15 @@ export function AdminPageClient({
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] pt-28 sm:pt-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-end">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 rounded-xl bg-rose-50 border border-rose-200 px-4 py-2 text-xs font-extrabold text-rose-600 hover:bg-rose-100 transition-colors"
+        >
+          <LogOut className="h-4 w-4" />
+          تسجيل الخروج من الداشبورد
+        </button>
+      </div>
       <AdminDashboard
         initialProducts={initialProducts}
         categories={categories}
