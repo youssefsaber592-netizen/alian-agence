@@ -35,27 +35,13 @@ function FacebookGlyph(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function XGlyph(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M17.3 3h3.02l-6.6 7.54L21 21h-5.3l-4.14-5.42L6.7 21H3.68l6.86-7.84L3 3h5.3l3.86 5.1L17.3 3Zm-1.06 16.2h1.67L7.84 4.71H6.05l10.19 14.49Z" />
-    </svg>
-  );
-}
 
-function YoutubeGlyph(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 4.85 12 4.85 12 4.85s-6 0-7.7.45A2.7 2.7 0 0 0 2.4 7.2C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9c1.7.45 7.7.45 7.7.45s6 0 7.7-.45a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8ZM10.1 15.1V8.9l5.2 3.1-5.2 3.1Z" />
-    </svg>
-  );
-}
+
+
 
 const SOCIALS = [
   { icon: InstagramGlyph, href: "https://instagram.com", label: "Instagram" },
   { icon: FacebookGlyph, href: "https://facebook.com", label: "Facebook" },
-  { icon: XGlyph, href: "https://twitter.com", label: "X" },
-  { icon: YoutubeGlyph, href: "https://youtube.com", label: "YouTube" },
 ];
 
 export function Footer() {
@@ -198,18 +184,18 @@ export function Footer() {
 
           <p className="mt-5 max-w-sm text-sm leading-7 text-slate-400">
             {isArabic
-              ? "متجر إلكتروني بيختار منتجات منزل وإكسسوارات بتصاميم عصرية وجودة عالية، عشان تخلي كل تفصيلة في بيتك أوف ذوقك."
+              ? " شريكك المثالي لترتيب وتحويل منزلك إلى واحة عصرية متكاملة؛ نجمع بين التصاميم الأنيقة، والحلول الذكية، والجودة التي تستحقها"
               : "An online store curating modern home and lifestyle products with a real eye for design, quality and detail."}
           </p>
 
           <ul className="mt-6 space-y-2.5 text-sm font-semibold text-slate-400">
             <li className="flex items-center gap-2.5">
               <Phone className="h-4 w-4 text-sky-400" />
-              <span dir="ltr">+20 100 000 0000</span>
+              <span dir="ltr"> 01285332842 - 01007657701</span>
             </li>
             <li className="flex items-center gap-2.5">
               <Mail className="h-4 w-4 text-sky-400" />
-              <span dir="ltr">hello@alian.agence</span>
+              <span dir="ltr">ahmed_mosaad125@yahoo.com</span>
             </li>
             <li className="flex items-center gap-2.5">
               <MapPin className="h-4 w-4 text-sky-400" />
