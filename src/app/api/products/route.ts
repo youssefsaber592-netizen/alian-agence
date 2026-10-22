@@ -98,6 +98,7 @@ export async function POST(request: Request) {
           String(body.categorySlug ?? "").trim() || "decor",
         badgeEn: body.badgeEn ? String(body.badgeEn) : null,
         badgeAr: body.badgeAr ? String(body.badgeAr) : null,
+        amazonUrl: body.amazonUrl ? String(body.amazonUrl).trim() : null,
         rating: Number(body.rating ?? 4.8),
         reviewsCount: Number(body.reviewsCount ?? 0),
         stock: Number(body.stock ?? 25),

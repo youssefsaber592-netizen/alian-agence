@@ -5,13 +5,13 @@ import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "ALIAN STORE — Modern home & lifestyle essentials",
-    template: "%s | ALIAN STORE",
+    default: "ALIAN AGENCE — Modern home & lifestyle essentials",
+    template: "%s | ALIAN AGENCE",
   },
   description:
     "A curated online store for modern home, kitchen, bathroom and lifestyle products with an Arabic-first, fully bilingual experience.",
   keywords: [
-    "ALIAN STORE",
+    "ALIAN AGENCE",
     "home decor",
     "kitchen supplies",
     "bathroom accessories",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     "ديكور",
   ],
   openGraph: {
-    title: "ALIAN STORE — Modern home & lifestyle essentials",
+    title: "ALIAN AGENCE — Modern home & lifestyle essentials",
     description:
       "Curated products, honest prices and a calm shopping experience in Arabic and English.",
     type: "website",

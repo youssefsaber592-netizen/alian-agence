@@ -41,6 +41,9 @@ export async function PATCH(request: Request, { params }: Params) {
     patch.image = body.image.trim();
     patch.gallery = [body.image.trim()];
   }
+  if (body.amazonUrl !== undefined) {
+    patch.amazonUrl = typeof body.amazonUrl === "string" ? body.amazonUrl.trim() : null;
+  }
   if (typeof body.categorySlug === "string")
     patch.categorySlug = body.categorySlug;
   if (body.badgeEn !== undefined) patch.badgeEn = body.badgeEn || null;
