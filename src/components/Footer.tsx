@@ -41,7 +41,7 @@ function FacebookGlyph(props: React.SVGProps<SVGSVGElement>) {
 
 const SOCIALS = [
   { icon: InstagramGlyph, href: "https://instagram.com", label: "Instagram" },
-  { icon: FacebookGlyph, href: "https://facebook.com", label: "Facebook" },
+  { icon: FacebookGlyph, href: "https://www.facebook.com/profile.php?id=61574802282998&locale=ar_AR", label: "Facebook" },
 ];
 
 export function Footer() {
