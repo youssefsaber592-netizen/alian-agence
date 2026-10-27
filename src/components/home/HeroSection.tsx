@@ -1,6 +1,7 @@
+
 "use client";
 
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -13,7 +14,8 @@ import {
   Zap,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-import { Counter, Marquee, useSpotlight } from "../ui/primitives";
+import { Counter, useSpotlight } from "../ui/primitives";
+import type { ProductDTO } from "@/lib/types";
 
 const TILES = [
   { image: "/images/hero/tile-holders.jpg", en: "Holders & Organizers", ar: "الحوامل والمنظمات" },
@@ -37,19 +39,46 @@ const wordFade = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.75, delay: 0.12 * i, ease: [0.22, 1, 0.36, 1] as const },
+    transition: {
+      duration: 0.75,
+      delay: 0.12 * i,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
   }),
 };
 
-export function HeroSection() {
+function shuffleProducts(products: ProductDTO[]) {
+  const result = [...products];
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
+}
+
+export function HeroSection({ products }: { products: ProductDTO[] }) {
   const { t, lang, isArabic, pick } = useLanguage();
   const Arrow = isArabic ? ArrowLeft : ArrowRight;
   const { ref, background, onPointerMove } = useSpotlight<HTMLDivElement>();
 
-  const headline = isArabic
-    ? ["صُمم", "ليعكس", "ذوقك"]
-    : ["Elevate", "Your"];
+  const [shuffledProducts, setShuffledProducts] = useState(products);
+
+  useEffect(() => {
+    setShuffledProducts(shuffleProducts(products));
+  }, [products]);
+
+  const headline = isArabic ? ["صُمم", "ليعكس", "ذوقك"] : ["Elevate", "Your"];
   const accent = isArabic ? "مع ALIAN AGENCE" : "Lifestyle";
+
+  // Repeat the shuffled collection enough times to keep the track filled.
+  const repeatedProducts = shuffledProducts.length
+    ? Array.from(
+        { length: Math.max(2, Math.ceil(12 / shuffledProducts.length)) },
+        () => shuffledProducts,
+      ).flat()
+    : [];
 
   return (
     <section
@@ -58,33 +87,95 @@ export function HeroSection() {
       onPointerMove={onPointerMove}
       className="relative flex min-h-[88vh] items-center overflow-hidden bg-ink-950 pt-28 pb-16 sm:min-h-[92vh] sm:pt-32"
     >
-      {/* moving imagery */}
+      {/* Continuously moving product gallery */}
       <div className="absolute inset-0 overflow-hidden">
-        <Marquee duration={64} className="h-full w-full" pauseOnHover={false}>
-          {TILES.map((tile, index) => (
-            <div
-              key={`${tile.en}-${index}`}
-              className="relative me-4 h-[46vh] w-[220px] shrink-0 overflow-hidden rounded-3xl border border-white/10 sm:me-5 sm:h-[52vh] sm:w-[300px] lg:h-[58vh] lg:w-[380px]"
-            >
-              <img
-                src={tile.image}
-                alt={pick(tile.en, tile.ar)}
-                className="absolute inset-0 h-full w-full object-cover"
-                loading={index < 3 ? "eager" : "lazy"}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent" />
-            </div>
-          ))}
-        </Marquee>
+        {shuffledProducts.length > 0 ? (
+          <motion.div
+            aria-label={pick("Product gallery", "معرض صور المنتجات")}
+            className="flex h-full w-max items-center"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              duration: 500,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "linear",
+            }}
+            style={{ willChange: "transform" }}
+          >
+            {/* Two identical groups make the loop seamless */}
+            {[...repeatedProducts, ...repeatedProducts].map((product, index) => (
+              <div
+                key={`${product.id}-${index}`}
+                className="group relative me-4 h-[52vh] w-[260px] shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl sm:me-5 sm:h-[58vh] sm:w-[340px] lg:h-[100vh] lg:w-[500px]"
+              >
+                <img
+                  src={
+                    product.image ||
+                    product.gallery?.[0] ||
+                    "/images/placeholder-product.png"
+                  }
+                  alt={pick(product.nameEn, product.nameAr)}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading={index < 4 ? "eager" : "lazy"}
+                  draggable={false}
+                />
 
-        <motion.div style={{ background }} className="pointer-events-none absolute inset-0" />
-        <div className="pointer-events-none absolute inset-0 bg-ink-950/45" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/10 to-ink-950/15" />
+
+                <div className="absolute inset-x-0 bottom-0 p-4 opacity-90 transition-opacity duration-300 group-hover:opacity-100 sm:p-5">
+                  <p className="line-clamp-2 text-sm font-extrabold text-white drop-shadow-lg sm:text-base">
+                    {pick(product.nameEn, product.nameAr)}
+                  </p>
+
+                  <p className="mt-1 text-xs font-bold text-cyan-200">
+                    {new Intl.NumberFormat(isArabic ? "ar-EG" : "en-EG", {
+                      style: "currency",
+                      currency: "EGP",
+                      maximumFractionDigits: 0,
+                    }).format(product.price)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            className="flex h-full w-max items-center"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              duration: 45,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "linear",
+            }}
+          >
+            {[...TILES, ...TILES, ...TILES, ...TILES].map((tile, index) => (
+              <div
+                key={`${tile.en}-${index}`}
+                className="relative me-4 h-[48vh] w-[220px] shrink-0 overflow-hidden rounded-3xl border border-white/10 sm:me-5 sm:h-[54vh] sm:w-[300px] lg:h-[62vh] lg:w-[380px]"
+              >
+                <img
+                  src={tile.image}
+                  alt={pick(tile.en, tile.ar)}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </motion.div>
+        )}
+
+        <motion.div
+          style={{ background }}
+          className="pointer-events-none absolute inset-0"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-ink-950/50" />
         <div className="pointer-events-none absolute inset-0 mesh-glow opacity-80" />
         <div className="pointer-events-none absolute inset-0 bg-grain opacity-[0.07] mix-blend-soft-light" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#f6f8fb] to-transparent" />
       </div>
 
-      {/* floating cards */}
+      {/* Collection card */}
       <motion.div
         initial={{ opacity: 0, x: isArabic ? 60 : -60 }}
         animate={{ opacity: 1, x: 0, y: [0, -12, 0] }}
@@ -108,6 +199,7 @@ export function HeroSection() {
         </div>
       </motion.div>
 
+      {/* Reviews card */}
       <motion.div
         initial={{ opacity: 0, x: isArabic ? -60 : 60 }}
         animate={{ opacity: 1, x: 0, y: [0, 14, 0] }}
@@ -131,6 +223,7 @@ export function HeroSection() {
         </div>
       </motion.div>
 
+      {/* Live shopping indicator */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -144,7 +237,7 @@ export function HeroSection() {
         {pick("38 people are shopping right now", "٣٨ شخص بيتسوقوا حاليًا")}
       </motion.div>
 
-      {/* content */}
+      {/* Main content */}
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
@@ -170,7 +263,7 @@ export function HeroSection() {
                   variants={wordFade}
                   initial="hidden"
                   animate="show"
-                  className="inline-block whitespace-pre me-3"
+                  className="me-3 inline-block whitespace-pre"
                 >
                   {word}
                 </motion.span>
@@ -180,7 +273,11 @@ export function HeroSection() {
             <motion.span
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.9,
+                delay: 0.45,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="text-gradient mt-3 block sm:mt-4"
             >
               {accent}
@@ -223,7 +320,7 @@ export function HeroSection() {
             </Link>
           </motion.div>
 
-          {/* trust micro-copy */}
+          {/* Trust micro-copy */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -243,7 +340,7 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* stats strip */}
+        {/* Stats */}
         <motion.dl
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -267,7 +364,7 @@ export function HeroSection() {
         </motion.dl>
       </div>
 
-      {/* scroll cue */}
+      {/* Scroll cue */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
